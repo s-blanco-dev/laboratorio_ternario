@@ -1,0 +1,61 @@
+#include "esp_log.h"
+#include "esp_err.h"
+
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/queue.h"
+#include "freertos/semphr.h"
+
+#include "shared_types.h"
+#include "task_a.h"
+#include "rgb_led.h"
+
+static const char *TAG = "MAIN";
+
+static rgb_color_t current_color = {
+    .r = 255,
+    .g = 0,
+    .b = 0
+};
+
+static SemaphoreHandle_t color_mutex = NULL;
+static QueueHandle_t command_queue = NULL;
+
+void app_main(void)
+{
+    ESP_LOGI(TAG, "Iniciando Laboratorio 3");
+
+    ESP_ERROR_CHECK(led_rgb_init());
+
+    color_mutex = xSemaphoreCreateMutex();
+
+    if (color_mutex == NULL) {
+        ESP_LOGE(TAG, "No se pudo crear el mutex");
+        return;
+    }
+
+    command_queue = xQueueCreate(10, sizeof(led_command_t));
+
+    if (command_queue == NULL) {
+        ESP_LOGE(TAG, "No se pudo crear la cola");
+        return;
+    }
+
+    static task_a_params_t task_a_params = {
+        .color_mutex = NULL,
+        .current_color = &current_color
+    };
+
+    task_a_params.color_mutex = color_mutex;
+
+    xTaskCreate(
+        task_a,
+        "task_a",
+        4096,
+        &task_a_params,
+        tskIDLE_PRIORITY + 1,
+        NULL
+    );
+
+    ESP_LOGI(TAG, "TASK A creada correctamente");
+}
