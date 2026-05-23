@@ -14,7 +14,7 @@ void app_main(void)
     static task_a_params_t task_a_params;
     TaskHandle_t task_a_handler = NULL;
     color_mutex = xSemaphoreCreateMutex();
-    rgb_color_t murrent = {255, 0, 0};
+    rgb_color_t murrent = {128, 0, 128};
     led_strip_t *led = NULL;
     ESP_ERROR_CHECK(led_rgb_init(&led));
     task_a_params.color_mutex = color_mutex;
