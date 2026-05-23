@@ -1,8 +1,11 @@
 #include "include/task_a.h"
 #include "../shared_types.h"
+#include "esp_log.h"
 #include "freertos/idf_additions.h"
 #include "portmacro.h"
 #include "rgb_led.h"
+
+static const char *TAG = "TASK_A";
 
 void blink_led_task(void *pvParameters) {
   task_a_params_t *params = (task_a_params_t *)pvParameters;
@@ -16,8 +19,10 @@ void blink_led_task(void *pvParameters) {
 
       led_on(params->led_strip);
       led_set_color(params->led_strip, currolor);
+      ESP_LOGI(TAG, "LED ON");
       vTaskDelay(pdMS_TO_TICKS(500));
       led_off(params->led_strip);
+      ESP_LOGI(TAG, "LED OFF");
       vTaskDelay(pdMS_TO_TICKS(500));
 
       xSemaphoreGive(params->color_mutex);
