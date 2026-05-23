@@ -18,6 +18,7 @@ void blink_led_task(void *pvParameters) {
       led_set_color(params->led_strip, currolor);
       vTaskDelay(pdMS_TO_TICKS(500));
       led_off(params->led_strip);
+      vTaskDelay(pdMS_TO_TICKS(500));
 
       xSemaphoreGive(params->color_mutex);
     }
