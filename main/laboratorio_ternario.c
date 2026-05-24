@@ -30,7 +30,7 @@ static SemaphoreHandle_t color_mutex = NULL;
 static QueueHandle_t command_queue = NULL;
 
 // color actual compartido (current_color):
-static rgb_color_t currolor = {0, 0, 255};
+static rgb_color_t currolor = {130, 1, 120};
 
 
 
@@ -42,10 +42,10 @@ void app_main(void)
    * ============================
    */
 
-  static task_c_params_t task_a_params;
-  static task_a_params_t task_c_params;
+  static task_a_params_t task_a_params;
+  static task_c_params_t task_c_params;
   
-  TaskHandle_t task_a_params = NULL;
+  TaskHandle_t task_a_handler = NULL;
   TaskHandle_t task_c_handler = NULL;
 
 
@@ -115,7 +115,7 @@ void app_main(void)
      "TASK_A",
      CONFIG_ESP32_PTHREAD_TASK_STACK_SIZE_DEFAULT,
      &task_a_params,
-     tskIDLE_PRIORITY+1 // priridad baja
+     tskIDLE_PRIORITY + 1, // priridad baja
      &task_a_handler
      );
   
