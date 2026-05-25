@@ -32,17 +32,41 @@ static void uart_init(void) {
 
 // <COLOR> <SECONDS>\n
 static bool parse_color(const char *token, color_t *out) {
-    if (strcmp(token, "ROJO") == 0) {
+    if (strcmp(token, "rojo") == 0) {
         *out = (color_t){255, 0, 0};
         return true;
-    } else if (strcmp(token, "VERDE") == 0) {
+    } else if (strcmp(token, "verde") == 0) {
         *out = (color_t){0, 255, 0};
         return true;
-    } else if (strcmp(token, "AZUL") == 0) {
+    } else if (strcmp(token, "azul") == 0) {
         *out = (color_t){0, 0, 255};
         return true;
-    } else if (strcmp(token, "BLANCO") == 0) {
+    } else if (strcmp(token, "blanco") == 0) {
         *out = (color_t){255, 255, 255};
+        return true;
+    } else if (strcmp(token, "amarillo") == 0) {
+        *out = (color_t){255, 255, 0};
+        return true;
+    } else if (strcmp(token, "cyan") == 0) {
+        *out = (color_t){0, 255, 255};
+        return true;
+    } else if (strcmp(token, "magenta") == 0) {
+        *out = (color_t){255, 0, 255};
+        return true;
+    } else if (strcmp(token, "naranja") == 0) {
+        *out = (color_t){255, 165, 0};
+        return true;
+    } else if (strcmp(token, "rosado") == 0) {
+        *out = (color_t){255, 192, 203};
+        return true;
+    } else if (strcmp(token, "violeta") == 0) {
+        *out = (color_t){238, 130, 238};
+        return true;
+    } else if (strcmp(token, "dorado") == 0) {
+        *out = (color_t){255, 215, 0};
+        return true;
+    } else if (strcmp(token, "lima") == 0) {
+        *out = (color_t){50, 205, 50};
         return true;
     }
     return false;
