@@ -2,7 +2,6 @@
 #include "../shared_types.h"
 #include "esp_log.h"
 #include "freertos/idf_additions.h"
-#include "portmacro.h"
 #include "rgb_led.h"
 
 static const char *TAG = "TASK_A";
@@ -14,7 +13,7 @@ void blink_led_task(void *pvParameters) {
     while (1) {
         // invictos en america
         if (xSemaphoreTake(params->color_mutex, pdMS_TO_TICKS(500)) == pdTRUE) {
-            color_t currolor = {params->current_color.r, params->current_color.g, params->current_color.b};
+            color_t currolor = {params->current_color->r, params->current_color->g, params->current_color->b};
 
             led_on(params->led_strip);
             led_set_color(params->led_strip, currolor);

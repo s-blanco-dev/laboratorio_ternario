@@ -5,7 +5,7 @@
 #include "rgb_led.h"
 
 void task_b(void *pvParameters);
-static bool parse_color(const char *token, color_t *out);
-static void uart_init(void);
+bool parse_color(const char *token, color_t *out);
+void uart_init(void);
 
 #endif
