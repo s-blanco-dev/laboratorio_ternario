@@ -12,7 +12,7 @@
 // etiqueta para identificar mensajes en consola
 static const char *BALL = "TASK_C";
 
-// varianles infamememnte privadas para task_c.c
+// variables infamememnte privadas para task_c.c
 static SemaphoreHandle_t s_color_mutex = NULL;
 static color_t *s_current_color = NULL;
 
@@ -26,7 +26,7 @@ static void color_timer_callback(TimerHandle_t xTimer) {
     color_t *new_color = (color_t *)pvTimerGetTimerID(xTimer);
 
     if (new_color == NULL) {
-        ESP_LOGE(BALL, "pvTimerID NULL, consultar a Xabi Alonso");
+        ESP_LOGE(BALL, "pvTimerID NULL");
         xTimerDelete(xTimer, 0);
         return;
     }
@@ -49,7 +49,7 @@ void task_c(void *pvParameters) {
     task_c_params_t *params = (task_c_params_t *)pvParameters;
 
     if (params == NULL) {
-        ESP_LOGE(BALL, "Parametros NULL, consultar a Nico Calarco");
+        ESP_LOGW(BALL, "Parametros NULL.");
         vTaskDelete(NULL);
         return;
     }
@@ -58,7 +58,7 @@ void task_c(void *pvParameters) {
     s_current_color = params->current_color;
 
     if (s_color_mutex == NULL || s_current_color == NULL || params->command_queue == NULL) {
-        ESP_LOGE(BALL, "Parametros invalidos");
+        ESP_LOGW(BALL, "Parametros invalidos");
         vTaskDelete(NULL);
         return;
     }
@@ -67,7 +67,7 @@ void task_c(void *pvParameters) {
     led_command_t command;
 
     while (1) {
-        if (xQueueReceive(params->command_queue, &command, portMAX_DELAY) == pdTRUE) {
+        if (xQueueReceive(params->command_queue, &command, portMAX_DELAY) == pdPASS) {
             ESP_LOGI(BALL, "Comando recibido R=%d G=%d B=%d delay=%lu s", command.color.r, command.color.g,
                      command.color.b, command.delay_s);
 
@@ -93,7 +93,7 @@ void task_c(void *pvParameters) {
             }
 
             if (xTimerStart(timer, 0) != pdPASS) {
-                ESP_LOGE(BALL, "Fue imposible inciar el timer, por favor no consultar a Joel Gak.");
+                ESP_LOGE(BALL, "Fue imposible inciar el timer.");
                 xTimerDelete(timer, 0);
                 vPortFree(timer_color);
                 continue;

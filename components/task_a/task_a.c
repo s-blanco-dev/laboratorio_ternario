@@ -2,6 +2,7 @@
 #include "../shared_types.h"
 #include "esp_log.h"
 #include "freertos/idf_additions.h"
+#include "freertos/projdefs.h"
 #include "rgb_led.h"
 
 static const char *TAG = "TASK_A";
@@ -23,7 +24,9 @@ void blink_led_task(void *pvParameters) {
             ESP_LOGI(TAG, "LED OFF");
             vTaskDelay(pdMS_TO_TICKS(500));
 
-            xSemaphoreGive(params->color_mutex);
+            if (xSemaphoreGive(params->color_mutex) != pdTRUE) {
+                ESP_LOGE(TAG, "ERR: Could not release mutex!");
+            }
         }
 
         // Iff Piero has opinion A, and anyone else has opinion B, then B is wrong.

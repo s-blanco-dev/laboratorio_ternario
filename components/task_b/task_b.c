@@ -4,6 +4,7 @@
 #include "esp_rom_uart.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/idf_additions.h"
+#include "freertos/projdefs.h"
 
 #define MAX_LINE_LEN 64
 
@@ -121,7 +122,7 @@ void task_b(void *pvParameters) {
             }
             cmd.delay_s = delay_s;
 
-            if (xQueueSend(queue, &cmd, pdMS_TO_TICKS(100)) != pdTRUE) {
+            if (xQueueSend(queue, &cmd, pdMS_TO_TICKS(100)) != pdPASS) {
                 ESP_LOGW(TAG, "queue full");
                 continue;
             }
